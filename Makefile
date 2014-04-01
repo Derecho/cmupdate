@@ -9,7 +9,7 @@ all: update.zip
 	@echo "Done!"
 
 clean:
-	@rm -rf root index.xml apps $(PACKAGES) update-script update.zip
+	@rm -rf root index.xml apps $(PACKAGES) update.zip
 	@echo "Directory has been cleaned"
 
 root:
