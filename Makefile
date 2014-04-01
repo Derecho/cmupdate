@@ -30,13 +30,8 @@ $(PACKAGES): %.apk: root index.xml
 	@wget -q `./fdroidurl.py $*` -O root/data/app/$@
 	@touch $@
 
-update-script: root
-	@echo "Creating update-script..."
-	@echo "show_progress 0.1 0" >> root/META-INF/com/google/android/update-script
-	@echo "copy_dir PACKAGE:data DATA:" >> root/META-INF/com/google/android/update-script
-	@echo "show_progress 0.1 10" >> root/META-INF/com/google/android/update-script
-	@touch $@
-
-update.zip: apps update-script
+update.zip: apps root
 	@echo "Creating update.zip..."
+	@cp res/updater-script root/META-INF/com/google/android/
+	@cp res/update-binary root/META-INF/com/google/android/
 	@cd root/ && zip ../update.zip -rq *

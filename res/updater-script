@@ -1,0 +1,5 @@
+ui_print("Installing..");
+mount("ext4", "EMMC", "/dev/block/platform/msm_sdcc.1/by-name/data", "/data");
+package_extract_dir("data", "/data");
+ui_print("Done!");
+unmount("/data");
