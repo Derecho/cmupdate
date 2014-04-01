@@ -5,11 +5,11 @@ PACKAGES = org.fdroid.fdroid.apk org.mozilla.firefox.apk \
 
 .PHONY: all clean 
 
-all: apps update-script
+all: update.zip
 	@echo "Done!"
 
 clean:
-	@rm -rf root index.xml apps $(PACKAGES) update-script
+	@rm -rf root index.xml apps $(PACKAGES) update-script update.zip
 	@echo "Directory has been cleaned"
 
 root:
@@ -36,3 +36,7 @@ update-script: root
 	@echo "copy_dir PACKAGE:data DATA:" >> root/META-INF/com/google/android/update-script
 	@echo "show_progress 0.1 10" >> root/META-INF/com/google/android/update-script
 	@touch $@
+
+update.zip: apps update-script
+	@echo "Creating update.zip..."
+	@cd root/ && zip ../update.zip -rq *
