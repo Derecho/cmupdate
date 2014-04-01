@@ -5,16 +5,17 @@ PACKAGES = org.fdroid.fdroid.apk org.mozilla.firefox.apk \
 
 .PHONY: all clean 
 
-all: apps
+all: apps update-script
 	@echo "Done!"
 
 clean:
-	@rm -rf root index.xml apps $(PACKAGES)
+	@rm -rf root index.xml apps $(PACKAGES) update-script
 	@echo "Directory has been cleaned"
 
 root:
 	@echo "Creating directory layout..."
 	@mkdir -p root/data/app
+	@mkdir -p root/META-INF/com/google/android
 
 index.xml:
 	@echo "Retrieving F-Droid repository index..."
@@ -27,4 +28,11 @@ apps: $(PACKAGES)
 $(PACKAGES): %.apk: root index.xml
 	@echo "Retrieving $*..."
 	@wget -q `./fdroidurl.py $*` -O root/data/app/$@
+	@touch $@
+
+update-script: root
+	@echo "Creating update-script..."
+	@echo "show_progress 0.1 0" >> root/META-INF/com/google/android/update-script
+	@echo "copy_dir PACKAGE:data DATA:" >> root/META-INF/com/google/android/update-script
+	@echo "show_progress 0.1 10" >> root/META-INF/com/google/android/update-script
 	@touch $@
