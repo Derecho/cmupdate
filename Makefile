@@ -1,10 +1,12 @@
-.PHONY: all clean root
+PACKAGES = org.fdroid.fdroid.apk org.mozilla.firefox.apk
+
+.PHONY: all clean 
 
 all: apps
 	@echo "Done!"
 
 clean:
-	@rm -rf root fdroid firefox index.xml apps
+	@rm -rf root index.xml apps $(PACKAGES)
 	@echo "Directory has been cleaned"
 
 root:
@@ -15,17 +17,11 @@ index.xml:
 	@echo "Retrieving F-Droid repository index..."
 	@wget -q https://f-droid.org/repo/index.xml
 
-apps: fdroid firefox
+apps: $(PACKAGES)
 	@echo "Completed retrieving apps"
 	@touch $@
 
-fdroid: root
-	@echo "Retrieving F-Droid..."
-	@wget -q https://f-droid.org/FDroid.apk -O root/data/app/org.fdroid.fdroid.apk
-	@touch $@
-
-# Do some list magic like with SRCS, one target for all packages (including fdroid?)
-firefox: root index.xml
-	@echo "Retrieving Firefox..."
-	@wget -q `./fdroidurl.py org.mozilla.firefox` -O root/data/app/org.mozilla.firefox.apk
+$(PACKAGES): %.apk: root index.xml
+	@echo "Retrieving $*..."
+	@wget -q `./fdroidurl.py $*` -O root/data/app/$@
 	@touch $@
