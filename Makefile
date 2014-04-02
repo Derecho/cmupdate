@@ -1,7 +1,10 @@
-PACKAGES = org.fdroid.fdroid.apk org.mozilla.firefox.apk \
+PACKAGES = org.fdroid.fdroid.apk \
+		   org.mozilla.firefox.apk \
 		   com.duckduckgo.mobile.android.apk \
-		   ch.blinkenlights.android.vanilla.apk org.telegram.messenger.apk \
-		   sk.vx.connectbot.apk
+		   ch.blinkenlights.android.vanilla.apk \
+		   org.telegram.messenger.apk \
+		   sk.vx.connectbot.apk \
+		   org.servalproject.apk
 
 .PHONY: all clean 
 
